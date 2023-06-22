@@ -1,27 +1,28 @@
 class Solution {
 public:
     char findKthBit(int n, int k) {
-        int x, p = 24, q = -1;
-        bool flip = 0, base = 0, val = 0;
+        int lowest_greater_pow, current_power = 24, highest_pow_factor = -1;
+        bool flip = 0, base_bit = 0, bit = 0;
 
-        while (!val) {
-            q++;
-            val = k & (1 << q);
+        while (!bit) {
+            highest_pow_factor++;
+            bit = k & (1 << highest_pow_factor);
         }
-        if (q) base = 1;
+        if (highest_pow_factor) base_bit = 1;
         
-        while (p > q) {
-            val = 0;
-            while (!val) {
-                p--;
-                val = k & (1 << p);
+        while (current_power > highest_pow_factor) {
+            bit = 0;
+            while (!bit) {
+                current_power--;
+                bit = k & (1 << current_power);
             }
 
-            if(p == q) return char(48 + (flip ^ base));
-            x = 1 << (p + 1);
+            lowest_greater_pow = 1 << (current_power + 1);
             flip = !flip;
-            k = x - k;
+            k = lowest_greater_pow - k;
         }
-        return '0';
+        
+        flip = !flip;
+        return char(48 + (flip ^ base_bit));
     }
 };
